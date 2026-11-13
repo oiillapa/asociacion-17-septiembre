@@ -5,4 +5,4 @@ window.SUPABASE_ANON_KEY = "sb_publishable_k-ZJoMjQEIe-Flm7U0_iSQ_EtbIuMYb";
 
 
 // Tiempo del carrusel en milisegundos. Ejemplo: 5000 = 5 segundos.
-window.HERO_SLIDE_DELAY_MS = 5000;
+window.HERO_SLIDE_DELAY_MS = 500;
