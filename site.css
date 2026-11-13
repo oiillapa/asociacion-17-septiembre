@@ -26,3 +26,7 @@
 [hidden]{display:none!important}
 @media(max-width:800px){.contact-layout{grid-template-columns:1fr;gap:24px}.location-copy{padding:20px}}
 @media(max-width:590px){.location-copy{flex-direction:column;align-items:flex-start}.location-open{white-space:normal}.map-frame{height:285px}}
+
+/* Ubicación compacta, alineada bajo el texto de Contacto */
+.contact-layout>div:first-child{min-width:0}.contact-layout .location-panel{margin-top:28px;border-radius:16px;max-width:100%;box-shadow:0 16px 36px rgba(0,0,0,.17)}.contact-layout .location-copy{padding:16px 18px;display:block}.contact-layout .location-copy h3{font-size:20px;margin:5px 0}.contact-layout .location-copy p{overflow-wrap:anywhere}.contact-layout .location-open{display:inline-flex;margin-top:12px;padding:10px 13px}.contact-layout .map-frame{height:245px}.contact-layout .map-placeholder{padding:25px;font-size:14px}
+@media(max-width:800px){.contact-layout .map-frame{height:260px}}

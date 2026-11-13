@@ -66,3 +66,11 @@ CONTACTO Y GOOGLE MAPS (actualización)
 - Si dejas la dirección en blanco, la web mostrará un aviso en lugar de un lugar incorrecto.
 - Los canales WhatsApp, Instagram, Facebook y TikTok muestran iconos identificables. Sus enlaces siguen editándose desde el administrador.
 - No se necesita SQL adicional. Conserva el config.js que ya está conectado con Supabase.
+
+
+CONTACTOS — GOOGLE MAPS BAJO EL TEXTO
+En Administración → Editar textos → Contactos, hay dos campos:
+- Enlace de Google Maps: pega el vínculo de Maps o el HTML de «Compartir → Insertar un mapa».
+- Dirección exacta: opcional, recomendable si el enlace empieza con https://maps.app.goo.gl/.
+Un enlace corto compartido sí permite abrir Google Maps, pero no revela la ubicación necesaria para incrustarlo directamente. Para mostrar el mapa dentro de la web usa un enlace de inserción oficial o completa la dirección. Guarda los textos; no hace falta SQL ni volver a publicar cada cambio de ubicación.
+La ubicación aparece debajo del texto «Contáctanos», en una ventana compacta.

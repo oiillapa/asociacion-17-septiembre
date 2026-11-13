@@ -5,16 +5,54 @@ const $=id=>document.getElementById(id), txt=(el,v)=>{if(el)el.textContent=v??''
 const configError='No se pudo conectar a Supabase. Comprueba config.js y los permisos de lectura de la tabla.';
 const cleanLink=v=>{const url=safeUrl(v);return url.startsWith('https://')?url:''};
 function setContent(){document.querySelectorAll('[data-t]').forEach(el=>txt(el,content[el.dataset.t]??defaults[el.dataset.t]));document.querySelectorAll('[data-placeholder]').forEach(el=>el.placeholder=content[el.dataset.placeholder]||'');[['whatsapp_general_link','whatsapp_general_url'],['whatsapp_directo_link','whatsapp_directo_url'],['instagram_link','instagram_url'],['facebook_link','facebook_url'],['tiktok_link','tiktok_url']].forEach(([id,key])=>{const el=$(id);if(!el)return;const uri=cleanLink(content[key]);el.href=uri||'#';if(!uri)el.setAttribute('aria-disabled','true')});$('year')&&(txt($('year'),new Date().getFullYear()));let logo=safeUrl(content.logo_url);if(logo)document.querySelectorAll('#brandSeal').forEach(el=>{el.textContent='';const img=document.createElement('img');img.src=logo;img.alt='Sello institucional';el.append(img)});let banner=safeUrl(content.hero_image_url);if(banner){document.querySelector('.hero')?.style.setProperty('--hero-image',`url("${banner.replace(/["\\]/g,'')}")`)};}
+function parseContactMap(rawAddress, rawLink){
+ // Sólo se aceptan enlaces HTTPS de los dominios oficiales de Google Maps.
+ let value=String(rawLink||'').trim();
+ const address=String(rawAddress||'').trim();
+ // Acepta URL normal o el código de inserción que entrega Google Maps.
+ if(value.includes('<iframe')){
+   const match=value.match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+   value=match?match[1].replace(/&amp;/g,'&'):'';
+ }
+ let url=null;
+ try {url=new URL(value)}catch(e){}
+ const host=url?.hostname.toLowerCase()||'';
+ const trusted=host==='google.com'||host==='www.google.com'||host==='maps.google.com'||host==='maps.app.goo.gl'||host==='goo.gl'||host.endsWith('.google.com');
+ const external=trusted&&url?.protocol==='https:'?url.href:'';
+ let embed='';
+ const query=s=>`https://www.google.com/maps?q=${encodeURIComponent(s)}&output=embed`;
+ if(external){
+   if(host==='www.google.com'||host==='google.com'||host==='maps.google.com'||host.endsWith('.google.com')){
+     if(url.pathname.startsWith('/maps/embed') && url.searchParams.get('pb'))embed=url.href;
+     else {
+       const q=url.searchParams.get('query')||url.searchParams.get('q')||url.searchParams.get('destination');
+       if(q)embed=query(q);
+       else {
+         const place=url.pathname.match(/\/maps\/place\/([^/]+)/i);
+         const at=url.pathname.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+         if(place)embed=query(decodeURIComponent(place[1]).replace(/\+/g,' '));
+         else if(at)embed=query(`${at[1]},${at[2]}`);
+       }
+     }
+   }
+ }
+ if(!embed&&address)embed=query(address);
+ const openUrl=external|| (address?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(address):'');
+ return {embed,openUrl,address};
+}
 function updateContactMap(){
- const address=String(content.contact_map_address||'').trim();
+ const {embed,openUrl,address}=parseContactMap(content.contact_map_address,content.contact_map_url);
  const frame=$('contactMap'),placeholder=$('contactMapPlaceholder'),addressText=$('contactAddress'),link=$('contactMapLink');
  if(!frame||!placeholder||!addressText||!link)return;
- if(!address){frame.removeAttribute('src');frame.hidden=true;placeholder.hidden=false;addressText.textContent='Dirección pendiente de configurar en el administrador.';link.hidden=true;return;}
- // La dirección es texto introducido por el administrador. Nunca se interpreta como HTML.
- const query=encodeURIComponent(address);
- frame.src='https://www.google.com/maps?q='+query+'&output=embed';
- frame.hidden=false;placeholder.hidden=true;addressText.textContent=address;
- link.href='https://www.google.com/maps/search/?api=1&query='+query;link.hidden=false;
+ if(embed){
+   if(frame.src!==embed)frame.src=embed;
+   frame.hidden=false;placeholder.hidden=true;
+ }else{
+   frame.removeAttribute('src');frame.hidden=true;placeholder.hidden=false;
+   placeholder.textContent=openUrl?'Este enlace abre la ubicación en Google Maps. Para mostrar el mapa aquí, pega también la dirección exacta o el código de «Insertar un mapa».':'Agrega un enlace de Google Maps o la dirección de la asociación en el administrador.';
+ }
+ addressText.textContent=address|| (openUrl?'Ubicación de la Asociación 17 de Septiembre':'Ubicación pendiente de configurar.');
+ if(openUrl){link.href=openUrl;link.hidden=false;}else{link.removeAttribute('href');link.hidden=true;}
 }
 async function refreshContent(){if(!db){setContent();updateContactMap();return;}try{const {data,error}=await db.from('site_content').select('content_key,content_value');if(error)throw error;content={...defaults,...Object.fromEntries((data||[]).map(r=>[r.content_key,r.content_value]))};setContent();updateContactMap();}catch(e){console.warn('No se pudieron recuperar textos:',e.message);setContent();updateContactMap();}}
 function modalOpen(d){if(d&&typeof d.showModal==='function'&&!d.open)d.showModal()}
