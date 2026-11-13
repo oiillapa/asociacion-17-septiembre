@@ -8,6 +8,8 @@ async function login(ev){ev.preventDefault();if(!db)return status('loginMessage'
 function tab(id){document.querySelectorAll('.admin-tab').forEach(el=>el.classList.toggle('active',el.dataset.panel===id));document.querySelectorAll('.admin-panel').forEach(el=>el.hidden=el.id!==id);}
 const valueFor = key => content[key]===undefined?defaults[key]:content[key];
 function fieldLabel(key){
+ if(key==='contact_map_address')return 'Dirección exacta para el mapa de Google Maps';
+ if(key==='contact_map_title')return 'Título de la sección de ubicación';
  const replacements={hero:'Portada',nav:'Menú',about:'Quiénes somos',mission:'Misión',vision:'Visión',benefits:'Beneficios',benefit:'Beneficio',news:'Noticias',events:'Eventos',gallery:'Galería',contact:'Contactos',footer:'Pie de página',branches:'Ramas',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',whatsapp:'WhatsApp',general:'General',directo:'Directiva',image:'Imagen',logo:'Sello institucional',url:'Enlace o imagen',text:'Texto',title:'Título',intro:'Introducción',lead:'Resumen',button:'Texto del botón',kicker:'Etiqueta superior',search:'Búsqueda',placeholder:'Texto de ayuda',legal:'Aviso legal',note:'Nota',label:'Nombre visible',second:'Secundario',motto:'Lema',copyright:'Créditos',card:'Tarjeta'};
  return key.split('_').map(x=>replacements[x]||(/^[0-9]+$/.test(x)?x:x)).join(' ');
 }

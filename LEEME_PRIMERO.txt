@@ -57,3 +57,12 @@ CARRUSEL AUTOMÁTICO
 - El carrusel principal cambia las imágenes automáticamente.
 - Para cambiar el tiempo, abre config.js y modifica la línea: window.HERO_SLIDE_DELAY_MS = 5000;
 - El valor está en milisegundos: 5000 = 5 segundos, 7000 = 7 segundos, 3000 = 3 segundos.
+
+
+CONTACTO Y GOOGLE MAPS (actualización)
+- En el administrador, entra en Textos y elige la sección «Contactos».
+- Busca «Título de la sección de ubicación» para cambiar el título y «Dirección exacta para el mapa de Google Maps» para escribir la dirección completa y exacta del local.
+- Guarda los textos modificados. El mapa aparecerá en la sección Contacto al recargar Inicio.
+- Si dejas la dirección en blanco, la web mostrará un aviso en lugar de un lugar incorrecto.
+- Los canales WhatsApp, Instagram, Facebook y TikTok muestran iconos identificables. Sus enlaces siguen editándose desde el administrador.
+- No se necesita SQL adicional. Conserva el config.js que ya está conectado con Supabase.

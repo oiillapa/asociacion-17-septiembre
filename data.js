@@ -55,6 +55,8 @@ window.SITE_FIELDS = [
  ['contact','Contactos','contact_kicker','06 — COMUNICACIÓN'],
  ['contact','Contactos','contact_title','Estamos para escucharte'],
  ['contact','Contactos','contact_text','Comunícate con la asociación a través de nuestros canales oficiales.'],
+ ['contact','Contactos','contact_map_title','Nuestra ubicación'],
+ ['contact','Contactos','contact_map_address',''],
  ['contact','Contactos','whatsapp_general_label','WhatsApp información general'],
  ['contact','Contactos','whatsapp_general_url','https://wa.me/593989120403'],
  ['contact','Contactos','whatsapp_directo_label','WhatsApp directiva'],
