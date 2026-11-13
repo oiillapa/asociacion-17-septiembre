@@ -1,0 +1,53 @@
+ASOCIACIÓN 17 DE SEPTIEMBRE — WEB RECONSTRUIDA DESDE CERO (V1)
+==============================================================
+
+QUÉ CAMBIA
+- Se ha creado de nuevo index.html, ramas.html, admin.html, sus estilos y su lógica.
+- Se conservan la apariencia azul y dorada, la identidad de la Asociación y las imágenes de referencia de las 24 ramas.
+- Las ramas solo aparecen en ramas.html al hacer clic en el menú «Calificaciones y ramas». No hay tarjetas de ramas en Inicio.
+- Los textos de la web se cargan de site_content y pueden editarse desde formularios agrupados, ya rellenados con los textos actuales.
+- Las fichas de ramas se cargan de branch_catalog y se guardan en esa misma tabla, sin listas duplicadas ni fichas codificadas a mano.
+- El administrador muestra un error si Supabase no permite la actualización. Tras guardar, vuelve a leer el registro para comprobarlo.
+- Noticias, eventos, galería y archivos continúan utilizando las tablas existentes posts, events, media y el bucket association-media.
+
+ANTES DE PUBLICAR EN NETLIFY
+1. Conserva una copia completa del sitio que está funcionando.
+2. Copia el config.js QUE YA FUNCIONA en tu sitio actual dentro de esta carpeta y reemplaza el config.js de ejemplo.
+   Solo deben figurar la URL de Supabase y su clave pública (anon o sb_publishable). NUNCA guardes contraseñas ni claves service_role aquí.
+3. No ejecutes schema.sql ni ninguna migración anterior. Esta versión presupone que ya existen las tablas
+   site_content, branch_catalog, media, posts y events y que MIGRACION_ADITIVA_V2.sql ya se ejecutó.
+4. En Netlify, publica la carpeta «Asociacion17_DesdeCero_V1», es decir, el directorio que contiene
+   index.html, admin.html y ramas.html. No publiques solamente el ZIP.
+5. Abre /admin.html e inicia sesión con tu usuario ya existente de Supabase.
+6. Primero cambia UNA descripción en Ramas, pulsa Guardar esta rama y observa el mensaje de confirmación.
+7. Luego abre /ramas.html en una pestaña nueva, pulsa «Actualizar fichas» y comprueba la modificación.
+8. Edita un texto en el administrador, guarda, abre la página pública y actualiza.
+9. Una vez comprobado el funcionamiento, empieza a editar los demás apartados.
+
+SI FALLA EL GUARDADO
+- Copia el MENSAJE EXACTO que aparece en el administrador y comunícalo para corregir la política de permisos.
+- No reejecutes migraciones antiguas, no crees cuentas nuevas ni borres tablas.
+- El inicio de sesión exitoso NO implica necesariamente autorización para actualizar branch_catalog.
+- La edición de ramas requiere que tu usuario sea reconocido por la función public.is_admin() en Supabase
+  (según las políticas RLS que tiene tu proyecto). Esta versión no altera la seguridad de Supabase.
+
+NOTAS
+- Se respetan los 24 registros existentes de branch_catalog; no se insertan nuevos datos.
+- Los textos previos almacenados en site_content tienen prioridad sobre los textos de muestra.
+- No se puede verificar desde un proyecto local la escritura real en tu Supabase sin credenciales ni acceso.
+- Comprueba que el bucket Storage «association-media» permita subir archivos al administrador autorizado.
+- Las imágenes originales personalizadas no se reemplazan. Si una ficha tiene una foto propia válida, se usa esa foto.
+- El directorio no incluye nuevos oficios que no estén ya en branch_catalog. La carga total del reglamento sigue siendo un trabajo aparte.
+- La Asociación orienta en los trámites; la autoridad competente resuelve la calificación artesanal.
+
+ARCHIVOS
+index.html     Página Inicio sin catálogo de ramas
+ramas.html     Directorio independiente
+admin.html     Panel de gestión
+site.css       Estilo institucional
+site.js        Lectura actualizada de Supabase y representación pública
+admin.js       Formularios y verificación de guardado
+data.js        Campos editables y referencias visuales
+config.js      ARCHIVO DE EJEMPLO — sustituir por el que ya funciona
+assets/ramas/  24 imágenes específicas para las ramas destacadas
+_headers       Política para reducir problemas de caché de archivos HTML/JS
