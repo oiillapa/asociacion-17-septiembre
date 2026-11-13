@@ -51,3 +51,9 @@ data.js        Campos editables y referencias visuales
 config.js      ARCHIVO DE EJEMPLO — sustituir por el que ya funciona
 assets/ramas/  24 imágenes específicas para las ramas destacadas
 _headers       Política para reducir problemas de caché de archivos HTML/JS
+
+
+CARRUSEL AUTOMÁTICO
+- El carrusel principal cambia las imágenes automáticamente.
+- Para cambiar el tiempo, abre config.js y modifica la línea: window.HERO_SLIDE_DELAY_MS = 5000;
+- El valor está en milisegundos: 5000 = 5 segundos, 7000 = 7 segundos, 3000 = 3 segundos.
